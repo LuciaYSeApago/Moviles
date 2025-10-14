@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
         <activity
+            android:name="Activities.pantallapreguntas"
+            android:exported="false" />
+        <activity
             android:name="Activities.PantallaPrincipal"
             android:exported="true"
             android:label="@string/title_activity_pantalla_principal"

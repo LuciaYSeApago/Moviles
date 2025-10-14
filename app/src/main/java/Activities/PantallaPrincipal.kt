@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import Activities.ui.theme.MyApplicationTheme
+import android.content.Intent
+import android.widget.Button
 import com.example.myapplication.R
 
 class PantallaPrincipal : ComponentActivity() {
@@ -20,6 +22,11 @@ class PantallaPrincipal : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.pantallaprincipalbonito)
 
+        val si_soy: Button = findViewById(R.id.button_soy)
+        si_soy.setOnClickListener {
+            val intent: Intent = Intent(this, pantallapreguntas::class.java)
+            startActivity(intent)
+        }
     }
 }
 

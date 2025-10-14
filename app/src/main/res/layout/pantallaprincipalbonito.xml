@@ -3,32 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/pantalla1_boceto">
 
     <Button
-        android:id="@+id/aitorbotton"
-        android:layout_width="243dp"
-        android:layout_height="108dp"
+        android:id="@+id/button_soy"
+        android:layout_width="308dp"
+        android:layout_height="80dp"
         android:text="DALE!"
         android:textColor="@color/material_dynamic_secondary80"
         android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.765" />
-
-    <EditText
-        android:id="@+id/luuetext"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="388dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.147" />
+        app:layout_constraintVertical_bias="0.961" />
+
+    <EditText
+        android:id="@+id/luuetext"
+        android:layout_width="267dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="388dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.204" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
