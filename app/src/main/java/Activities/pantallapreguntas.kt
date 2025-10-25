@@ -1,15 +1,16 @@
 package Activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.myapplication.R
+import android.os.Handler
+import androidx.appcompat.app.AlertDialog
+
 
 class pantallapreguntas : ComponentActivity() {
 
@@ -19,6 +20,9 @@ class pantallapreguntas : ComponentActivity() {
         val correctAnswerIndex:Int
     )
 
+    private lateinit var tvUsuario: TextView
+    private lateinit var tvTitulo: TextView
+    private lateinit var tvTiempo: TextView
     private lateinit var tvQuestion: TextView
     private lateinit var optionButtons: List<Button>
     private lateinit var btnNext: Button
@@ -31,6 +35,13 @@ class pantallapreguntas : ComponentActivity() {
     )
 
     private var currentQuestionIndex = 0
+    private var correctAnswers = 0
+    private val userAnswers = mutableListOf<Int?>()
+
+    private var tiempoSegundos = 0
+    private var handler = Handler(Looper.getMainLooper())
+    private var runnable: Runnable? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +54,10 @@ class pantallapreguntas : ComponentActivity() {
 //            insets
 //        }
 
+
+        tvUsuario = findViewById(R.id.tvUsuario)
+        tvTitulo = findViewById(R.id.tvTitulo)
+        tvTiempo = findViewById(R.id.tvTiempo)
         tvQuestion = findViewById(R.id.tvQuestion)
         optionButtons = listOf(
             findViewById(R.id.btnOption1),
@@ -53,12 +68,20 @@ class pantallapreguntas : ComponentActivity() {
         btnNext = findViewById(R.id.btnNext)
         btnPrevious = findViewById(R.id.btnPrevious)
 
+        // Obtener nombre del usuario desde el intent
+        val nombreUsuario = intent.getStringExtra("nombreUsuario") ?: "Invitado"
+        tvUsuario.text = "$nombreUsuario"
+
+        // Inicializa lista de respuestas del tamaño de las preguntas
+        repeat(questions.size){userAnswers.add(null)}
+
+        startTimer()
         showQuestion()
 
         // Configurar listeners de los botones
         optionButtons.forEachIndexed { index, button ->
             button.setOnClickListener {
-                checkAnswer(index)
+                handleAnswer(index)
             }
         }
 
@@ -68,7 +91,8 @@ class pantallapreguntas : ComponentActivity() {
                 currentQuestionIndex++
                 showQuestion()
             }else{
-                Toast.makeText(this, "!Has terminado el quiz!", Toast.LENGTH_SHORT).show()
+                stopTimer()
+                showResults()
             }
         }
 
@@ -82,12 +106,21 @@ class pantallapreguntas : ComponentActivity() {
 
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun showQuestion(){
         val question = questions[currentQuestionIndex]
         tvQuestion.text = question.questionText
 
         question.options.forEachIndexed { index, option ->
             optionButtons[index].text = option
+            optionButtons[index].isEnabled = true
+            optionButtons[index].setBackgroundColor(R.color.purple_200)
+        }
+
+        // Mostrar colores si ya respondió
+        val answer = userAnswers[currentQuestionIndex]
+        if(answer != null){
+            showAnswerColors(answer)
         }
 
         // Controlar visibilidad de los botones
@@ -95,21 +128,80 @@ class pantallapreguntas : ComponentActivity() {
         btnNext.text = if(currentQuestionIndex == questions.size - 1) "Finalizar" else "Siguiente"
     }
 
-    private fun checkAnswer(selectedIndex: Int){
+
+    private fun handleAnswer(selectedIndex: Int){
         val question = questions[currentQuestionIndex]
+        userAnswers[currentQuestionIndex] = selectedIndex
 
-        if(selectedIndex == question.correctAnswerIndex){
-            Toast.makeText(this, "Correcto", Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(this, "Incorrecto", Toast.LENGTH_SHORT).show()
-        }
+        showAnswerColors(selectedIndex)
+        if(selectedIndex == question.correctAnswerIndex) correctAnswers++
+    }
 
-        // Avanzar a la siguiente pregunta
-        if(currentQuestionIndex < questions.size - 1){
-            currentQuestionIndex++;
-            showQuestion()
-        }else{
-            Toast.makeText(this, "!Has terminado el quiz", Toast.LENGTH_SHORT).show()
+    @SuppressLint("ResourceAsColor")
+    private fun showAnswerColors(selectedIndex: Int){
+        val correctIndex = questions[currentQuestionIndex].correctAnswerIndex
+
+        optionButtons.forEachIndexed { index, button ->
+            button.isEnabled = false
+            when{
+                index == correctIndex -> {
+                    // Correcta siempre verde
+                    button.setBackgroundColor(R.color.purple_700)
+                }
+                index == selectedIndex -> {
+                    // Incorrecta seleccionada en rojo
+                    button.setBackgroundColor(R.color.teal_200)
+                }
+                else -> {
+                    // Las demás opciones gris
+                    button.setBackgroundColor(R.color.purple_200)
+                }
+            }
         }
     }
+
+    private fun startTimer(){
+        runnable = object : Runnable{
+            override fun run() {
+                tiempoSegundos++
+                val minutos = tiempoSegundos / 60
+                val segundos = tiempoSegundos % 60
+                tvTiempo.text = String.format("%02d:%02d", minutos, segundos)
+                handler.postDelayed(this, 1000)
+            }
+        }
+        handler.post(runnable!!)
+    }
+
+    private fun stopTimer(){
+        runnable?.let {handler.removeCallbacks(it)}
+    }
+
+    private fun showResults(){
+        val total = questions.size
+        val resultado = "Has acertado $correctAnswers de $total preguntas.\nTiempo: ${tvTiempo.text}"
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Resultados")
+            .setMessage(resultado)
+            .setPositiveButton("Aceptar"){_,_ -> finish()}
+            .create()
+        dialog.show()
+    }
+//    private fun checkAnswer(selectedIndex: Int){
+//        val question = questions[currentQuestionIndex]
+//
+//        if(selectedIndex == question.correctAnswerIndex){
+//            Toast.makeText(this, "Correcto", Toast.LENGTH_SHORT).show()
+//        }else{
+//            Toast.makeText(this, "Incorrecto", Toast.LENGTH_SHORT).show()
+//        }
+//
+//        // Avanzar a la siguiente pregunta
+//        if(currentQuestionIndex < questions.size - 1){
+//            currentQuestionIndex++;
+//            showQuestion()
+//        }else{
+//            Toast.makeText(this, "!Has terminado el quiz", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 }
