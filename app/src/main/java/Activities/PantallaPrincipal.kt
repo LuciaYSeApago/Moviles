@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import Activities.ui.theme.MyApplicationTheme
 import android.content.Intent
 import android.widget.Button
+import android.widget.EditText
 import com.example.myapplication.R
 
 class PantallaPrincipal : ComponentActivity() {
@@ -22,10 +23,23 @@ class PantallaPrincipal : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.pantallaprincipalbonito)
 
+        // Variables a utilizar
         val si_soy: Button = findViewById(R.id.button_soy)
+        val nombreEditText = findViewById<EditText>(R.id.luuetext)
+
         si_soy.setOnClickListener {
-            val intent: Intent = Intent(this, pantallapreguntas::class.java)
-            startActivity(intent)
+            val nombre = nombreEditText.text.toString().trim()
+
+            if(nombre.isEmpty()){
+                nombreEditText.error = "Por favor, escribe un nombre"
+                nombreEditText.requestFocus()
+            }else{
+                val intent: Intent = Intent(this, pantallapreguntas::class.java)
+                intent.putExtra("nombreUsuario", nombre)
+                startActivity(intent)
+            }
+
+
         }
     }
 }
