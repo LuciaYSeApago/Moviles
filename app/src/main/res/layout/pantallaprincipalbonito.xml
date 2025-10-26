@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/Fondo_inicio">
+    android:background="@drawable/fondo_inicio">
 
 
     <com.google.android.material.button.MaterialButton
@@ -77,7 +77,7 @@
         android:id="@+id/Marcapaginas"
         android:layout_width="42dp"
         android:layout_height="60dp"
-        android:background="@drawable/Marcapaginas"
+        android:background="@drawable/marcapaginas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.842"
@@ -89,7 +89,7 @@
         android:id="@+id/Lazo"
         android:layout_width="65dp"
         android:layout_height="59dp"
-        android:background="@drawable/Lazo"
+        android:background="@drawable/lazo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
@@ -101,6 +101,7 @@
         android:id="@+id/Brillos"
         android:layout_width="64dp"
         android:layout_height="70dp"
+        android:background="@drawable/brillos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.066"
