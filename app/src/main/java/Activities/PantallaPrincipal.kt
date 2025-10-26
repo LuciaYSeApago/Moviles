@@ -34,7 +34,7 @@ class PantallaPrincipal : ComponentActivity() {
                 nombreEditText.error = "Por favor, escribe un nombre"
                 nombreEditText.requestFocus()
             }else{
-                val intent: Intent = Intent(this, pantallapreguntas::class.java)
+                val intent: Intent = Intent(this, PantallaAjustes::class.java)
                 intent.putExtra("nombreUsuario", nombre)
                 startActivity(intent)
             }

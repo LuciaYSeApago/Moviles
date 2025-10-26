@@ -185,19 +185,19 @@ class pantallapreguntas : ComponentActivity() {
         val correctIndex = questions[currentQuestionIndex].correctAnswerIndex
 
         optionButtons.forEachIndexed { index, button ->
-            //button.isEnabled = false
+            button.isEnabled = false
             when{
                 index == correctIndex -> {
                     // Correcta siempre verde
-                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_200))
+                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.verde_suave))
                 }
                 index == selectedIndex -> {
                     // Incorrecta seleccionada en rojo
-                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_200))
+                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.rojo_coral))
                 }
                 else -> {
                     // Las demás opciones gris
-                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
+                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.gris_claro))
                 }
             }
         }
