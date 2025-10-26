@@ -3,7 +3,6 @@
     <string name="title_activity_pantalla_principal">PantallaPrincipal</string>
 
     <string-array name="categorias">
-        <item>General</item>
         <item>Ciencia</item>
         <item>Historia</item>
         <item>Deportes</item>

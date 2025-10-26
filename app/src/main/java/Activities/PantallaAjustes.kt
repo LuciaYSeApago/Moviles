@@ -27,12 +27,8 @@ class PantallaAjustes: ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ajustes_inicio)
 
-        spCategoria = findViewById(R.id.spinnerCategoria)
-        spDificultad = findViewById(R.id.spinnerDificultad)
-        seekPreguntas = findViewById(R.id.seekPreguntas)
-        tvNumPreguntas = findViewById(R.id.tvNumPreguntas)
-        btnJugar = findViewById(R.id.btnJugar)
-        tvBienvenida = findViewById(R.id.tvBienvenida)
+        // Inicializar variables
+        initListeners()
 
         // SharedPreferences
         prefs = getSharedPreferences("ajustesJuego", MODE_PRIVATE)
@@ -42,8 +38,8 @@ class PantallaAjustes: ComponentActivity() {
         tvBienvenida.text = "Bienvenido/a, $nombreUsuario"
 
         // Configurar opciones de spinners
-        val categorias = listOf("General", "Ciencia", "Historia", "Deportes")
-        val dificultades = listOf("Fácil", "Media", "Dificil")
+        val categorias = listOf("Ciencia", "Historia", "Deportes")
+        val dificultades = listOf("Facil", "Media", "Dificil")
 
         spCategoria.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categorias)
         spDificultad.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, dificultades)
@@ -73,6 +69,15 @@ class PantallaAjustes: ComponentActivity() {
             startActivity(intent)
             Toast.makeText(this, "Ajustes guardados. ¡Empezamos!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun initListeners(){
+        spCategoria = findViewById(R.id.spinnerCategoria)
+        spDificultad = findViewById(R.id.spinnerDificultad)
+        seekPreguntas = findViewById(R.id.seekPreguntas)
+        tvNumPreguntas = findViewById(R.id.tvNumPreguntas)
+        btnJugar = findViewById(R.id.btnJugar)
+        tvBienvenida = findViewById(R.id.tvBienvenida)
     }
 
     private fun savePreferences(){

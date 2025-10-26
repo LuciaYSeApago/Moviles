@@ -10,9 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import com.example.myapplication.R
 import android.os.Handler
-import android.widget.EditText
 import android.widget.SeekBar
-import android.widget.Spinner
 import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -25,6 +23,7 @@ class pantallapreguntas : ComponentActivity() {
 
     data class Question(
         val questionText: String,
+        val categoria: String,
         val options: List<String>,
         val correctAnswerIndex:Int
     )
@@ -38,19 +37,114 @@ class pantallapreguntas : ComponentActivity() {
     private lateinit var btnPrevious: Button
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var btnSettings: Button
-    private lateinit var etNombreUsuario: EditText
-    private lateinit var spCategoria: Spinner
-    private lateinit var spDificultad: Spinner
-    private lateinit var seekPreguntas: SeekBar
-    private lateinit var tvNumPreguntas: TextView
+
+    // Ajustes
+    private lateinit var seekVolume: SeekBar
     private lateinit var switchTema: Switch
     private lateinit var btnGuardarAjustes: Button
     private lateinit var prefs: SharedPreferences
 
+    private lateinit var categoriaSeleccionada: String
+    private lateinit var dificultadSeleccionada: String
+
+    private lateinit var preguntasFiltradas: List<Question>
+
     private val questions = listOf(
-        Question("¿Cuál es el planeta más grande?", listOf("Tierra", "Marte", "Júpiter", "Saturno"), 2),
-        Question("¿Cuál es el río más largo?", listOf("Nilo", "Amazonas", "Yangtsé", "Misisipi"), 1),
-        Question("¿Qué idioma se habla en Brasil?", listOf("Español", "Portugués", "Inglés", "Francés"), 1)
+        // ================= Ciencia =================
+        Question(
+            questionText = "¿Cuál es el planeta más grande del sistema solar?",
+            categoria = "Ciencia",
+            options = listOf("Tierra", "Marte", "Júpiter", "Saturno"),
+            correctAnswerIndex = 2
+        ),
+        Question(
+            questionText = "¿Cuál es el elemento químico con símbolo O?",
+            categoria = "Ciencia",
+            options = listOf("Oro", "Oxígeno", "Osmio", "Oganesón"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Qué fuerza mantiene a los planetas en órbita alrededor del Sol?",
+            categoria = "Ciencia",
+            options = listOf("Magnetismo", "Gravedad", "Fuerza centrífuga", "Electromagnetismo"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Qué tipo de energía se produce al quemar combustibles fósiles?",
+            categoria = "Ciencia",
+            options = listOf("Eléctrica", "Térmica", "Química", "Solar"),
+            correctAnswerIndex = 2
+        ),
+        Question(
+            questionText = "¿Cuál es la velocidad de la luz en el vacío (aprox.)?",
+            categoria = "Ciencia",
+            options = listOf("300.000 km/s", "150.000 km/s", "3.000 km/s", "30.000 km/s"),
+            correctAnswerIndex = 0
+        ),
+
+        // ================= Historia =================
+        Question(
+            questionText = "¿En qué año comenzó la Segunda Guerra Mundial?",
+            categoria = "Historia",
+            options = listOf("1935", "1939", "1941", "1945"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Quién fue el primer presidente de Estados Unidos?",
+            categoria = "Historia",
+            options = listOf("George Washington", "Abraham Lincoln", "Thomas Jefferson", "John Adams"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿Cuál civilización construyó Machu Picchu?",
+            categoria = "Historia",
+            options = listOf("Azteca", "Inca", "Maya", "Egipcia"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Qué imperio se expandió bajo Alejandro Magno?",
+            categoria = "Historia",
+            options = listOf("Persa", "Macedonio", "Romano", "Egipcio"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Quién pintó La Mona Lisa?",
+            categoria = "Historia",
+            options = listOf("Miguel Ángel", "Leonardo da Vinci", "Rafael", "Van Gogh"),
+            correctAnswerIndex = 1
+        ),
+
+        // ================= Deportes =================
+        Question(
+            questionText = "¿Quién ganó la Copa Mundial de Fútbol en 2018?",
+            categoria = "Deportes",
+            options = listOf("Brasil", "Alemania", "Francia", "Argentina"),
+            correctAnswerIndex = 2
+        ),
+        Question(
+            questionText = "¿Cuántos jugadores hay en un equipo de baloncesto en cancha?",
+            categoria = "Deportes",
+            options = listOf("5", "6", "7", "11"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿En qué deporte se usa un disco llamado 'puck'?",
+            categoria = "Deportes",
+            options = listOf("Hockey sobre hielo", "Balonmano", "Rugby", "Fútbol"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿Qué país organiza los Juegos Olímpicos modernos?",
+            categoria = "Deportes",
+            options = listOf("Grecia", "Francia", "Japón", "Suiza"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿Cuántos sets se juegan en un partido de tenis masculino de Grand Slam?",
+            categoria = "Deportes",
+            options = listOf("3", "5", "7", "4"),
+            correctAnswerIndex = 1
+        )
     )
 
     private var currentQuestionIndex = 0
@@ -67,13 +161,18 @@ class pantallapreguntas : ComponentActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_test_aitor2)
 
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
-
         initListeners()
+
+        preguntasFiltradas = questions.filter { it.categoria == categoriaSeleccionada }
+
+        val numPreguntas: Int = when(dificultadSeleccionada) {
+            "Facil" -> 2
+            "Media" -> 4
+            "Dificil" -> preguntasFiltradas.size
+            else -> 3
+        }
+
+        preguntasFiltradas = preguntasFiltradas.take(numPreguntas)
 
         prefs = getSharedPreferences("ajustesJuego", MODE_PRIVATE)
 
@@ -84,15 +183,6 @@ class pantallapreguntas : ComponentActivity() {
         btnSettings.setOnClickListener {
             drawerLayout.openDrawer(findViewById(R.id.settingsPanel))
         }
-
-        // Cambiar número de preguntas
-        seekPreguntas.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                tvNumPreguntas.text = "Preguntas: ${progress + 1}"
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
 
         // Guardar ajustes
         btnGuardarAjustes.setOnClickListener {
@@ -116,7 +206,7 @@ class pantallapreguntas : ComponentActivity() {
         tvUsuario.text = "$nombreUsuario"
 
         // Inicializa lista de respuestas del tamaño de las preguntas
-        repeat(questions.size){userAnswers.add(null)}
+        repeat(preguntasFiltradas.size){userAnswers.add(null)}
 
         startTimer()
         showQuestion()
@@ -130,7 +220,7 @@ class pantallapreguntas : ComponentActivity() {
 
         // Boton siguiente
         btnNext.setOnClickListener {
-            if(currentQuestionIndex < questions.size-1){
+            if(currentQuestionIndex < preguntasFiltradas.size-1){
                 currentQuestionIndex++
                 showQuestion()
             }else{
@@ -151,7 +241,7 @@ class pantallapreguntas : ComponentActivity() {
 
     @SuppressLint("ResourceAsColor")
     private fun showQuestion(){
-        val question = questions[currentQuestionIndex]
+        val question = preguntasFiltradas[currentQuestionIndex]
         tvQuestion.text = question.questionText
 
         question.options.forEachIndexed { index, option ->
@@ -168,12 +258,12 @@ class pantallapreguntas : ComponentActivity() {
 
         // Controlar visibilidad de los botones
         btnPrevious.isEnabled = currentQuestionIndex > 0
-        btnNext.text = if(currentQuestionIndex == questions.size - 1) "Finalizar" else "Siguiente"
+        btnNext.text = if(currentQuestionIndex == preguntasFiltradas.size - 1) "Finalizar" else "Siguiente"
     }
 
 
     private fun handleAnswer(selectedIndex: Int){
-        val question = questions[currentQuestionIndex]
+        val question = preguntasFiltradas[currentQuestionIndex]
         userAnswers[currentQuestionIndex] = selectedIndex
 
         showAnswerColors(selectedIndex)
@@ -182,7 +272,7 @@ class pantallapreguntas : ComponentActivity() {
 
     @SuppressLint("ResourceAsColor")
     private fun showAnswerColors(selectedIndex: Int){
-        val correctIndex = questions[currentQuestionIndex].correctAnswerIndex
+        val correctIndex = preguntasFiltradas[currentQuestionIndex].correctAnswerIndex
 
         optionButtons.forEachIndexed { index, button ->
             button.isEnabled = false
@@ -221,7 +311,7 @@ class pantallapreguntas : ComponentActivity() {
     }
 
     private fun showResults(){
-        val total = questions.size
+        val total = preguntasFiltradas.size
         val resultado = "Has acertado $correctAnswers de $total preguntas.\nTiempo: ${tvTiempo.text}"
         val dialog = AlertDialog.Builder(this)
             .setTitle("Resultados")
@@ -233,22 +323,14 @@ class pantallapreguntas : ComponentActivity() {
 
     private fun savePreferences(){
         prefs.edit().apply {
-            putString("nombre", etNombreUsuario.text.toString())
-            putInt("categoría", spCategoria.selectedItemPosition)
-            putInt("dificultad", spDificultad.selectedItemPosition)
-            putInt("numPreguntas", seekPreguntas.progress + 1)
+            putInt("volumen", seekVolume.progress)
             putBoolean("modoOscuro", switchTema.isChecked)
             apply()
         }
     }
 
     private fun loadPreferences(){
-        etNombreUsuario.setText(prefs.getString("nombre", "Invitado"))
-        spCategoria.setSelection(prefs.getInt("categoria", 0))
-        spDificultad.setSelection(prefs.getInt("dificultad", 0))
-        val num = prefs.getInt("numPreguntas", 10)
-        seekPreguntas.progress = num - 1
-        tvNumPreguntas.text = "Preguntas: $num"
+        seekVolume.progress = prefs.getInt("volumen", 50)
         switchTema.isChecked = prefs.getBoolean("modoOscuro", false)
     }
 
@@ -269,12 +351,11 @@ class pantallapreguntas : ComponentActivity() {
 
         drawerLayout = findViewById(R.id.drawerLayout)
         btnSettings = findViewById(R.id.btnSettings)
-        etNombreUsuario = findViewById(R.id.etNombreUsuario)
-        spCategoria = findViewById(R.id.spCategoria)
-        spDificultad = findViewById(R.id.spDificultad)
-        seekPreguntas = findViewById(R.id.seekPreguntas)
-        tvNumPreguntas = findViewById(R.id.tvNumPreguntas)
+        seekVolume = findViewById(R.id.seekVolume)
         switchTema = findViewById(R.id.switchTema)
         btnGuardarAjustes = findViewById(R.id.btnGuardarAjustes)
+
+        categoriaSeleccionada = intent.getStringExtra("categoria") ?: "General"
+        dificultadSeleccionada = intent.getStringExtra("dificultad") ?: "Fácil"
     }
 }
