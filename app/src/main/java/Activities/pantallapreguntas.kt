@@ -1,6 +1,7 @@
 package Activities
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Looper
 import android.widget.Button
@@ -9,7 +10,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import com.example.myapplication.R
 import android.os.Handler
+import android.widget.EditText
+import android.widget.SeekBar
+import android.widget.Spinner
+import android.widget.Switch
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 
 
 class pantallapreguntas : ComponentActivity() {
@@ -27,6 +36,16 @@ class pantallapreguntas : ComponentActivity() {
     private lateinit var optionButtons: List<Button>
     private lateinit var btnNext: Button
     private lateinit var btnPrevious: Button
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var btnSettings: Button
+    private lateinit var etNombreUsuario: EditText
+    private lateinit var spCategoria: Spinner
+    private lateinit var spDificultad: Spinner
+    private lateinit var seekPreguntas: SeekBar
+    private lateinit var tvNumPreguntas: TextView
+    private lateinit var switchTema: Switch
+    private lateinit var btnGuardarAjustes: Button
+    private lateinit var prefs: SharedPreferences
 
     private val questions = listOf(
         Question("¿Cuál es el planeta más grande?", listOf("Tierra", "Marte", "Júpiter", "Saturno"), 2),
@@ -46,7 +65,7 @@ class pantallapreguntas : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_test_aitor)
+        setContentView(R.layout.activity_test_aitor2)
 
 //        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
 //            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -54,19 +73,43 @@ class pantallapreguntas : ComponentActivity() {
 //            insets
 //        }
 
+        initListeners()
 
-        tvUsuario = findViewById(R.id.tvUsuario)
-        tvTitulo = findViewById(R.id.tvTitulo)
-        tvTiempo = findViewById(R.id.tvTiempo)
-        tvQuestion = findViewById(R.id.tvQuestion)
-        optionButtons = listOf(
-            findViewById(R.id.btnOption1),
-            findViewById(R.id.btnOption2),
-            findViewById(R.id.btnOption3),
-            findViewById(R.id.btnOption4)
-        )
-        btnNext = findViewById(R.id.btnNext)
-        btnPrevious = findViewById(R.id.btnPrevious)
+        prefs = getSharedPreferences("ajustesJuego", MODE_PRIVATE)
+
+        // Cargar preferencias previas
+        loadPreferences()
+
+        // Abrir panel
+        btnSettings.setOnClickListener {
+            drawerLayout.openDrawer(findViewById(R.id.settingsPanel))
+        }
+
+        // Cambiar número de preguntas
+        seekPreguntas.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                tvNumPreguntas.text = "Preguntas: ${progress + 1}"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        // Guardar ajustes
+        btnGuardarAjustes.setOnClickListener {
+            savePreferences()
+            drawerLayout.closeDrawers()
+            Toast.makeText(this, "Ajustes guardados", Toast.LENGTH_SHORT).show()
+        }
+
+        // Cambiar tema oscuro/claro
+        switchTema.setOnCheckedChangeListener { _, isChecked ->
+            val modo = if (isChecked)
+                AppCompatDelegate.MODE_NIGHT_YES
+            else
+                AppCompatDelegate.MODE_NIGHT_NO
+            AppCompatDelegate.setDefaultNightMode(modo)
+        }
+
 
         // Obtener nombre del usuario desde el intent
         val nombreUsuario = intent.getStringExtra("nombreUsuario") ?: "Invitado"
@@ -142,19 +185,19 @@ class pantallapreguntas : ComponentActivity() {
         val correctIndex = questions[currentQuestionIndex].correctAnswerIndex
 
         optionButtons.forEachIndexed { index, button ->
-            button.isEnabled = false
+            //button.isEnabled = false
             when{
                 index == correctIndex -> {
                     // Correcta siempre verde
-                    button.setBackgroundColor(R.color.purple_700)
+                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_200))
                 }
                 index == selectedIndex -> {
                     // Incorrecta seleccionada en rojo
-                    button.setBackgroundColor(R.color.teal_200)
+                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_200))
                 }
                 else -> {
                     // Las demás opciones gris
-                    button.setBackgroundColor(R.color.purple_200)
+                    button.setBackgroundColor(ContextCompat.getColor(this, R.color.black))
                 }
             }
         }
@@ -187,21 +230,51 @@ class pantallapreguntas : ComponentActivity() {
             .create()
         dialog.show()
     }
-//    private fun checkAnswer(selectedIndex: Int){
-//        val question = questions[currentQuestionIndex]
-//
-//        if(selectedIndex == question.correctAnswerIndex){
-//            Toast.makeText(this, "Correcto", Toast.LENGTH_SHORT).show()
-//        }else{
-//            Toast.makeText(this, "Incorrecto", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        // Avanzar a la siguiente pregunta
-//        if(currentQuestionIndex < questions.size - 1){
-//            currentQuestionIndex++;
-//            showQuestion()
-//        }else{
-//            Toast.makeText(this, "!Has terminado el quiz", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+
+    private fun savePreferences(){
+        prefs.edit().apply {
+            putString("nombre", etNombreUsuario.text.toString())
+            putInt("categoría", spCategoria.selectedItemPosition)
+            putInt("dificultad", spDificultad.selectedItemPosition)
+            putInt("numPreguntas", seekPreguntas.progress + 1)
+            putBoolean("modoOscuro", switchTema.isChecked)
+            apply()
+        }
+    }
+
+    private fun loadPreferences(){
+        etNombreUsuario.setText(prefs.getString("nombre", "Invitado"))
+        spCategoria.setSelection(prefs.getInt("categoria", 0))
+        spDificultad.setSelection(prefs.getInt("dificultad", 0))
+        val num = prefs.getInt("numPreguntas", 10)
+        seekPreguntas.progress = num - 1
+        tvNumPreguntas.text = "Preguntas: $num"
+        switchTema.isChecked = prefs.getBoolean("modoOscuro", false)
+    }
+
+    // Funciones auxiliares
+    private fun initListeners(){
+        tvUsuario = findViewById(R.id.tvUsuario)
+        tvTitulo = findViewById(R.id.tvTitulo)
+        tvTiempo = findViewById(R.id.tvTiempo)
+        tvQuestion = findViewById(R.id.tvQuestion)
+        optionButtons = listOf(
+            findViewById(R.id.btnOption1),
+            findViewById(R.id.btnOption2),
+            findViewById(R.id.btnOption3),
+            findViewById(R.id.btnOption4)
+        )
+        btnNext = findViewById(R.id.btnNext)
+        btnPrevious = findViewById(R.id.btnPrevious)
+
+        drawerLayout = findViewById(R.id.drawerLayout)
+        btnSettings = findViewById(R.id.btnSettings)
+        etNombreUsuario = findViewById(R.id.etNombreUsuario)
+        spCategoria = findViewById(R.id.spCategoria)
+        spDificultad = findViewById(R.id.spDificultad)
+        seekPreguntas = findViewById(R.id.seekPreguntas)
+        tvNumPreguntas = findViewById(R.id.tvNumPreguntas)
+        switchTema = findViewById(R.id.switchTema)
+        btnGuardarAjustes = findViewById(R.id.btnGuardarAjustes)
+    }
 }

@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="title_activity_pantalla_principal">PantallaPrincipal</string>
+
+    <string-array name="categorias">
+        <item>General</item>
+        <item>Ciencia</item>
+        <item>Historia</item>
+        <item>Deportes</item>
+    </string-array>
+
+    <string-array name="dificultades">
+        <item>Fácil</item>
+        <item>Medio</item>
+        <item>Difícil</item>
+    </string-array>
 </resources>
