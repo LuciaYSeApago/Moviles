@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    //colores nuevos
+    <color name ="rosa_boton">#F3AFC4</color>
+    <color name ="rosa_boton_borde">#EC8EAB</color>
+    <color name ="rosa_boton_pulsado">#CA9EAC</color>
+    <color name ="rosa_boton_texto">#CC5478</color>
+    <color name ="blanco_texto">#DCE8FC</color>
 </resources>

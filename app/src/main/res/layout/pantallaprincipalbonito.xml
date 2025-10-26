@@ -4,24 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pantalla1_boceto">
+    android:background="@drawable/Fondo_inicio">
 
-    <Button
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_soy"
-        android:layout_width="308dp"
-        android:layout_height="80dp"
-        android:text="DALE!"
-        android:textColor="@color/material_dynamic_secondary80"
-        android:textSize="35sp"
+        android:layout_width="313dp"
+        android:layout_height="77dp"
+        android:text="Si, soy yo !"
+        android:textColor="@color/rosa_boton_texto"
+        android:textSize="20dp"
+        app:backgroundTint="@color/rosa_boton"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.961" />
+        app:layout_constraintVertical_bias="0.939"
+        app:strokeColor="@color/rosa_boton_borde"
+        app:strokeWidth="4dp"
+        tools:ignore="ExtraText" />
+
+    <View
+        android:id="@+id/myView"
+        android:layout_width="323dp"
+        android:layout_height="303dp"
+        android:background="@drawable/see_through_with_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.582" />
+
 
     <EditText
-        android:id="@+id/luuetext"
+        android:id="@+id/nombre_u"
         android:layout_width="267dp"
         android:layout_height="45dp"
         android:layout_marginTop="388dp"
@@ -29,7 +47,66 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204" />
+        app:layout_constraintVertical_bias="0.255" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Empecemos el quiz !"
+        android:textSize="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.447" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Primero necesitamos un nombre:"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.544" />
+
+    <View
+        android:id="@+id/Marcapaginas"
+        android:layout_width="42dp"
+        android:layout_height="60dp"
+        android:background="@drawable/Marcapaginas"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.842"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.375" />
+
+    <View
+        android:id="@+id/Lazo"
+        android:layout_width="65dp"
+        android:layout_height="59dp"
+        android:background="@drawable/Lazo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.602" />
+
+    <View
+        android:id="@+id/Brillos"
+        android:layout_width="64dp"
+        android:layout_height="70dp"
+        android:background="@drawable/Brillos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.331" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

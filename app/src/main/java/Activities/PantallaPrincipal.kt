@@ -25,7 +25,7 @@ class PantallaPrincipal : ComponentActivity() {
 
         // Variables a utilizar
         val si_soy: Button = findViewById(R.id.button_soy)
-        val nombreEditText = findViewById<EditText>(R.id.luuetext)
+        val nombreEditText = findViewById<EditText>(R.id.nombre_u)
 
         si_soy.setOnClickListener {
             val nombre = nombreEditText.text.toString().trim()
