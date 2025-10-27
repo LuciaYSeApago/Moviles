@@ -2,9 +2,11 @@ package Activities
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import com.example.myapplication.R
 
 
@@ -60,13 +62,18 @@ class PantallaResultados: ComponentActivity() {
             compareByDescending<Jugador> { it.aciertos }
                 .thenBy { convertirTiempoASegundos(it.tiempo) }
         )
+            .take(5)  // Solo los 5 mejores jugadores
 
         layoutRanking.removeAllViews()
 
         listaJugadores.forEachIndexed { index, jugador ->
-            val tv = TextView(this)
-            tv.text = "${index + 1}. ${jugador.nombre} - ${jugador.aciertos} aciertos - ${jugador.tiempo}"
-            tv.textSize = 16f
+            val tv = TextView(this).apply {
+                text = "${index + 1}. ${jugador.nombre} - ${jugador.aciertos} aciertos - ${jugador.tiempo}"
+                textSize = 16f
+                gravity = Gravity.START
+                setPadding(32, 8, 32, 8)
+            }
+
             layoutRanking.addView(tv)
         }
     }

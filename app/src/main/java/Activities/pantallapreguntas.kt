@@ -311,14 +311,6 @@ class pantallapreguntas : ComponentActivity() {
     }
 
     private fun showResults(){
-//        val total = preguntasFiltradas.size
-//        val resultado = "Has acertado $correctAnswers de $total preguntas.\nTiempo: ${tvTiempo.text}"
-//        val dialog = AlertDialog.Builder(this)
-//            .setTitle("Resultados")
-//            .setMessage(resultado)
-//            .setPositiveButton("Aceptar"){_,_ -> finish()}
-//            .create()
-//        dialog.show()
         val total = preguntasFiltradas.size
 
         // Datos del jugador
