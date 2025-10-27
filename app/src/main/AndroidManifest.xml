@@ -18,6 +18,9 @@
             android:name="Activities.PantallaAjustes"
             android:exported="false" />
         <activity
+            android:name="Activities.PantallaResultados"
+            android:exported="false" />
+        <activity
             android:name="Activities.PantallaPrincipal"
             android:exported="true"
             android:label="@string/title_activity_pantalla_principal"

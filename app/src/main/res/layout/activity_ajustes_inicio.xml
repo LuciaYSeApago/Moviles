@@ -126,43 +126,6 @@
         app:layout_constraintHeight_percent="0.4"
         />
 
-    <TextView
-        android:id="@+id/tvNumPreguntas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="◉ Número de preguntas: 5"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.67"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintHeight_percent="0.4"
-        />
-
-    <SeekBar
-        android:id="@+id/seekPreguntas"
-        android:layout_width="150dp"
-        android:layout_height="20dp"
-        android:max="19"
-        android:progress="4"
-        android:progressTint="@color/rosa_boton"
-        android:thumbTint="@color/rosa_boton"
-        android:progressBackgroundTint="#FFD6E4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        app:layout_constraintVertical_bias="0.71"
-        app:layout_constraintHorizontal_bias="0.35"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintHeight_percent="0.4"
-        />
-
     <View
         android:id="@+id/Marcapaginas"
         android:layout_width="42dp"

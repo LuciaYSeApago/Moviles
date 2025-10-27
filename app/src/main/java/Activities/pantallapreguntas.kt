@@ -1,6 +1,7 @@
 package Activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Looper
@@ -29,7 +30,6 @@ class pantallapreguntas : ComponentActivity() {
     )
 
     private lateinit var tvUsuario: TextView
-    private lateinit var tvTitulo: TextView
     private lateinit var tvTiempo: TextView
     private lateinit var tvQuestion: TextView
     private lateinit var optionButtons: List<Button>
@@ -247,7 +247,7 @@ class pantallapreguntas : ComponentActivity() {
         question.options.forEachIndexed { index, option ->
             optionButtons[index].text = option
             optionButtons[index].isEnabled = true
-            optionButtons[index].setBackgroundColor(R.color.purple_200)
+            optionButtons[index].setBackgroundColor(ContextCompat.getColor(this,R.color.rosa_boton))
         }
 
         // Mostrar colores si ya respondió
@@ -311,14 +311,26 @@ class pantallapreguntas : ComponentActivity() {
     }
 
     private fun showResults(){
+//        val total = preguntasFiltradas.size
+//        val resultado = "Has acertado $correctAnswers de $total preguntas.\nTiempo: ${tvTiempo.text}"
+//        val dialog = AlertDialog.Builder(this)
+//            .setTitle("Resultados")
+//            .setMessage(resultado)
+//            .setPositiveButton("Aceptar"){_,_ -> finish()}
+//            .create()
+//        dialog.show()
         val total = preguntasFiltradas.size
-        val resultado = "Has acertado $correctAnswers de $total preguntas.\nTiempo: ${tvTiempo.text}"
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Resultados")
-            .setMessage(resultado)
-            .setPositiveButton("Aceptar"){_,_ -> finish()}
-            .create()
-        dialog.show()
+
+        // Datos del jugador
+        val resultadoIntent = Intent(this, PantallaResultados::class.java).apply {
+            putExtra("nombreUsuario", tvUsuario.text.toString())
+            putExtra("aciertos", correctAnswers)
+            putExtra("total", total)
+            putExtra("tiempo", tvTiempo.text.toString())
+        }
+
+        startActivity(resultadoIntent)
+        finish()
     }
 
     private fun savePreferences(){
@@ -337,7 +349,6 @@ class pantallapreguntas : ComponentActivity() {
     // Funciones auxiliares
     private fun initListeners(){
         tvUsuario = findViewById(R.id.tvUsuario)
-        tvTitulo = findViewById(R.id.tvTitulo)
         tvTiempo = findViewById(R.id.tvTiempo)
         tvQuestion = findViewById(R.id.tvQuestion)
         optionButtons = listOf(

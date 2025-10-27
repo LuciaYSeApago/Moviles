@@ -24,8 +24,64 @@
         app:layout_constraintHeight_percent="0.4"/>
 
 
+    <TextView
+        android:id="@+id/tvUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Usuario:"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.16"
+
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.149"
+        app:layout_constraintWidth_percent="0.8" />
+
+    <TextView
+        android:id="@+id/tvTiempo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.837"
+
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.149"
+        app:layout_constraintWidth_percent="0.8" />
+
+
+    <TextView
+        android:id="@+id/tvQuestion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Aquí va la pregunta"
+        android:textSize="25dp"
+        app:layout_constraintWidth_max="300dp"
+        app:layout_constraintHeight_max="500dp"
+        android:maxLines="5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.497"
+
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.262"
+        app:layout_constraintWidth_percent="0.8" />
+
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_ajustes"
+        android:id="@+id/btnSettings"
         android:layout_width="170dp"
         android:layout_height="61dp"
         android:text="⚙ Ajustes"
@@ -49,10 +105,10 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/opcion1"
+        android:id="@+id/btnOption1"
         android:layout_width="313dp"
         android:layout_height="77dp"
-        android:text="Empecemos"
+        android:text="Opción 1"
         android:textColor="@color/rosa_boton_texto"
         android:textSize="20dp"
         app:backgroundTint="@color/rosa_boton"
@@ -72,10 +128,10 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/opcion2"
+        android:id="@+id/btnOption2"
         android:layout_width="313dp"
         android:layout_height="77dp"
-        android:text="Empecemos"
+        android:text="Opción 2"
         android:textColor="@color/rosa_boton_texto"
         android:textSize="20dp"
         app:backgroundTint="@color/rosa_boton"
@@ -95,10 +151,10 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/opcion3"
+        android:id="@+id/btnOption3"
         android:layout_width="313dp"
         android:layout_height="77dp"
-        android:text="Empecemos"
+        android:text="Opción 3"
         android:textColor="@color/rosa_boton_texto"
         android:textSize="20dp"
         app:backgroundTint="@color/rosa_boton"
@@ -118,10 +174,10 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/opcion4"
+        android:id="@+id/btnOption4"
         android:layout_width="313dp"
         android:layout_height="77dp"
-        android:text="Empecemos"
+        android:text="Opción 4"
         android:textColor="@color/rosa_boton_texto"
         android:textSize="20dp"
         app:backgroundTint="@color/rosa_boton"
@@ -141,7 +197,7 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/anterior"
+        android:id="@+id/btnPrevious"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:text="anterior"
@@ -164,7 +220,7 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/siguiente"
+        android:id="@+id/btnNext"
         android:layout_width="150dp"
         android:layout_height="60dp"
         android:text="siguiente"

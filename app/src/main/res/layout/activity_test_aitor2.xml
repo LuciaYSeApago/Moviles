@@ -11,17 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        >
 
-        <!-- Botón para abrir el panel -->
-        <Button
-            android:id="@+id/btnSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⚙ Ajustes" />
 
         <!-- Tu contenido actual (preguntas, botones, etc.) -->
-        <include layout="@layout/activity_test_aitor" />
+        <include layout="@layout/activity_pantallapreguntas" />
     </LinearLayout>
 
     <!-- PANEL DE AJUSTES LATERAL -->
