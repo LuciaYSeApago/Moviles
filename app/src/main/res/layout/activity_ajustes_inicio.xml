@@ -66,7 +66,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="◉ Selecciona la categoría:"
+        android:text="♡ Selecciona la categoría:"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -97,7 +97,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="◉ Selecciona la dificultad:"
+        android:text="♡ Selecciona la dificultad:"
         android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +121,7 @@
 
 
         app:layout_constraintVertical_bias="0.62"
-        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintHeight_percent="0.4"
         />

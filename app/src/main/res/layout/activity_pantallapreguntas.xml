@@ -66,6 +66,7 @@
         android:layout_height="wrap_content"
         android:text="Aquí va la pregunta"
         android:textSize="25dp"
+        android:gravity="center"
         app:layout_constraintWidth_max="300dp"
         app:layout_constraintHeight_max="500dp"
         android:maxLines="5"

@@ -1,10 +1,14 @@
 package Activities
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
@@ -14,6 +18,8 @@ class PantallaResultados: ComponentActivity() {
     private lateinit var prefs: SharedPreferences
     private lateinit var tvResume: TextView
     private lateinit var layoutRanking: LinearLayout
+
+    private lateinit var btnMenuPrincipal: Button
 
     data class Jugador(
         val nombre: String,
@@ -35,13 +41,20 @@ class PantallaResultados: ComponentActivity() {
         val total = intent.getIntExtra("total", 0)
         val tiempo = intent.getStringExtra("tiempo") ?: "00:00"
 
-        tvResume.text = "Jugador: $nombre\n Has acertado $aciertos de $total\nTiempo: $tiempo"
+        tvResume.text = "♡ Jugador: $nombre\n♡ Aciertos: $aciertos de $total\n♡ Tiempo: $tiempo"
 
         // Guardar resultado en ranking
         guardarResultado(nombre, aciertos, tiempo)
 
         // Mostrar ranking
         mostrarRanking()
+
+        // Volver al inicio
+        btnMenuPrincipal.setOnClickListener {
+            val intent = Intent(this, PantallaPrincipal::class.java)
+            startActivity(intent)
+            Toast.makeText(this, "Otro quiz", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun guardarResultado(nombre: String, aciertos: Int, tiempo: String){
@@ -69,7 +82,8 @@ class PantallaResultados: ComponentActivity() {
         listaJugadores.forEachIndexed { index, jugador ->
             val tv = TextView(this).apply {
                 text = "${index + 1}. ${jugador.nombre} - ${jugador.aciertos} aciertos - ${jugador.tiempo}"
-                textSize = 16f
+                textSize = 20f
+                setTextColor(getColor(R.color.rojo_coral))
                 gravity = Gravity.START
                 setPadding(32, 8, 32, 8)
             }
@@ -88,5 +102,6 @@ class PantallaResultados: ComponentActivity() {
     private fun initListeners(){
         tvResume = findViewById(R.id.tvResumen)
         layoutRanking = findViewById(R.id.layoutRanking)
+        btnMenuPrincipal = findViewById(R.id.btnMenuPrincipal)
     }
 }

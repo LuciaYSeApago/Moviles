@@ -244,6 +244,10 @@ class pantallapreguntas : ComponentActivity() {
         val question = preguntasFiltradas[currentQuestionIndex]
         tvQuestion.text = question.questionText
 
+        // Desactivar botón "Siguiente" al mostrar una nueva pregunta
+        btnNext.isEnabled = false
+        btnNext.alpha = 0.5f  // efecto visual de desactivado
+
         question.options.forEachIndexed { index, option ->
             optionButtons[index].text = option
             optionButtons[index].isEnabled = true
@@ -254,6 +258,8 @@ class pantallapreguntas : ComponentActivity() {
         val answer = userAnswers[currentQuestionIndex]
         if(answer != null){
             showAnswerColors(answer)
+            btnNext.isEnabled = true
+            btnNext.alpha = 1f
         }
 
         // Controlar visibilidad de los botones
@@ -268,6 +274,9 @@ class pantallapreguntas : ComponentActivity() {
 
         showAnswerColors(selectedIndex)
         if(selectedIndex == question.correctAnswerIndex) correctAnswers++
+
+        btnNext.isEnabled = true
+        btnNext.alpha = 1f
     }
 
     @SuppressLint("ResourceAsColor")
