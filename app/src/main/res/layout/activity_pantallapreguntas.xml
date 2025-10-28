@@ -31,15 +31,15 @@
         android:text="Usuario:"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="@color/rosa_boton_texto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintHorizontal_bias="0.16"
-
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149"
+
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintVertical_bias="0.16"
         app:layout_constraintWidth_percent="0.8" />
 
     <TextView
@@ -48,15 +48,16 @@
         android:layout_height="wrap_content"
         android:text="00:00"
         android:textSize="16sp"
+        android:textColor="@color/rosa_boton_texto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintHorizontal_bias="0.837"
-
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149"
+
+
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.84"
+        app:layout_constraintVertical_bias="0.16"
         app:layout_constraintWidth_percent="0.8" />
 
 
@@ -72,12 +73,12 @@
         android:maxLines="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintHorizontal_bias="0.497"
-
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
+
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintVertical_bias="0.262"
         app:layout_constraintWidth_percent="0.8" />
 

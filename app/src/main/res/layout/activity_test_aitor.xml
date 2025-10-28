@@ -29,20 +29,21 @@
         app:layout_constraintHeight_percent="0.4"
         />
 
+
     <View
         android:id="@+id/myView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="320dp"
+        android:layout_height="628dp"
         android:background="@drawable/see_through_with_border"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.8"
+        app:layout_constraintHorizontal_bias="0.538"
 
-        app:layout_constraintVertical_bias="0.18"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintHeight_percent="0.8"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.349"
+        app:layout_constraintWidth_percent="0.8" />
 
 
     <TextView
@@ -58,15 +59,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_max="500dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-
-
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085"
+        app:layout_constraintVertical_bias="0.16"
         app:layout_constraintWidth_max="250dp"
         app:layout_constraintWidth_percent="0.8" />
+
 
     <TextView
         android:id="@+id/tvRanking"
@@ -74,18 +75,17 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="🏆 Ranking general:"
-        android:textSize="22sp"
+        android:textSize="25dp"
         android:textStyle="bold"
         android:textColor="@color/rosa_boton_texto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintHorizontal_bias="0.497"
-
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.248"
+
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.25"
         app:layout_constraintWidth_percent="0.8" />
 
     <LinearLayout
@@ -94,26 +94,32 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
+        android:outlineSpotShadowColor="@color/rosa_boton_texto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351"
-        app:layout_constraintWidth_percent="0.65" />
+
+        app:layout_constraintVertical_bias="0.35"
+        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.5"
+        />
 
     <View
         android:id="@+id/Marcapaginas"
         android:layout_width="42dp"
-        android:layout_height="60dp"
+        android:layout_height="65dp"
         android:background="@drawable/marcapaginas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintHorizontal_bias="0.84"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.038"
+
+
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintVertical_bias="0.115"
         app:layout_constraintWidth_percent="0.8" />
 
     <View
@@ -123,11 +129,11 @@
         android:background="@drawable/lazo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintHorizontal_bias="0.982"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.967"
         app:layout_constraintVertical_bias="0.699"
         app:layout_constraintWidth_percent="0.8" />
 
@@ -138,11 +144,11 @@
         android:background="@drawable/brillos"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"
-        app:layout_constraintHorizontal_bias="0.046"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.835"
+
+        app:layout_constraintHeight_percent="0.4"
+        app:layout_constraintHorizontal_bias="0.09"
+        app:layout_constraintVertical_bias="0.82"
         app:layout_constraintWidth_percent="0.8" />
 </androidx.constraintlayout.widget.ConstraintLayout>

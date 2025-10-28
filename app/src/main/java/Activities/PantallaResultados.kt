@@ -41,7 +41,7 @@ class PantallaResultados: ComponentActivity() {
         val total = intent.getIntExtra("total", 0)
         val tiempo = intent.getStringExtra("tiempo") ?: "00:00"
 
-        tvResume.text = "♡ Jugador: $nombre\n♡ Aciertos: $aciertos de $total\n♡ Tiempo: $tiempo"
+        tvResume.text = "♡ $nombre      $aciertos de $total\n♡ Tiempo: $tiempo"
 
         // Guardar resultado en ranking
         guardarResultado(nombre, aciertos, tiempo)

@@ -51,6 +51,8 @@
         android:layout_height="wrap_content"
         android:text="Bienvenido/a"
         android:textSize="25dp"
+        android:textStyle="bold"
+        android:textColor="@color/rosa_boton_texto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +61,7 @@
 
         app:layout_constraintVertical_bias="0.42"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintWidth_percent ="0.8"
         app:layout_constraintHeight_percent="0.4"
         />
 
@@ -104,7 +106,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        app:layout_constraintVertical_bias="0.58"
+        app:layout_constraintVertical_bias="0.6"
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintHeight_percent="0.4"
@@ -120,7 +122,7 @@
         app:layout_constraintTop_toTopOf="parent"
 
 
-        app:layout_constraintVertical_bias="0.62"
+        app:layout_constraintVertical_bias="0.65"
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintHeight_percent="0.4"
