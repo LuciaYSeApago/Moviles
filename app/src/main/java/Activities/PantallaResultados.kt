@@ -3,6 +3,8 @@ package Activities
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
@@ -21,6 +23,9 @@ class PantallaResultados: ComponentActivity() {
 
     private lateinit var btnMenuPrincipal: Button
 
+    private lateinit var soundPool: SoundPool
+    private var sonidoClick = 0
+
     data class Jugador(
         val nombre: String,
         val aciertos: Int,
@@ -30,6 +35,18 @@ class PantallaResultados: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_aitor)
+
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(5)
+            .setAudioAttributes(audioAttributes)
+            .build()
+
+        sonidoClick = soundPool.load(this, R.raw.click, 1)
 
         initListeners()
 
@@ -51,6 +68,7 @@ class PantallaResultados: ComponentActivity() {
 
         // Volver al inicio
         btnMenuPrincipal.setOnClickListener {
+            soundPool.play(sonidoClick, 0.5f, 0.5f, 1, 0, 1f)
             val intent = Intent(this, PantallaPrincipal::class.java)
             startActivity(intent)
             Toast.makeText(this, "Otro quiz", Toast.LENGTH_SHORT).show()

@@ -18,6 +18,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import android.media.MediaPlayer
+import android.media.SoundPool
+import android.media.AudioAttributes
 
 
 class pantallapreguntas : ComponentActivity() {
@@ -40,7 +43,6 @@ class pantallapreguntas : ComponentActivity() {
 
     // Ajustes
     private lateinit var seekVolume: SeekBar
-    private lateinit var switchTema: Switch
     private lateinit var btnGuardarAjustes: Button
     private lateinit var prefs: SharedPreferences
 
@@ -48,6 +50,10 @@ class pantallapreguntas : ComponentActivity() {
     private lateinit var dificultadSeleccionada: String
 
     private lateinit var preguntasFiltradas: List<Question>
+
+    private lateinit var musicaFondo: MediaPlayer
+    private lateinit var soundPool: SoundPool
+
 
     private val questions = listOf(
         // ================= Ciencia =================
@@ -82,6 +88,37 @@ class pantallapreguntas : ComponentActivity() {
             correctAnswerIndex = 0
         ),
 
+        Question(
+            questionText = "¿Qué unidad se usa para medir la intensidad luminosa?",
+            categoria = "Ciencia",
+            options = listOf("Lux", "Candela", "Lumen", "Watt"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Cuál es el órgano más grande del cuerpo humano?",
+            categoria = "Ciencia",
+            options = listOf("Corazón", "Hígado", "Pulmones", "Piel"),
+            correctAnswerIndex = 3
+        ),
+        Question(
+            questionText = "¿Cuál es el metal más ligero?",
+            categoria = "Ciencia",
+            options = listOf("Aluminio", "Litio", "Sodio", "Magnesio"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Qué órgano del cuerpo humano produce la insulina?",
+            categoria = "Ciencia",
+            options = listOf("Hígado", "Riñón", "Páncreas", "Estómago"),
+            correctAnswerIndex = 2
+        ),
+        Question(
+            questionText = "¿Qué fenómeno explica la descomposición de la luz blanca en colores?",
+            categoria = "Ciencia",
+            options = listOf("Reflexión", "Difracción", "Refracción", "Dispersión"),
+            correctAnswerIndex = 3
+        ),
+
         // ================= Historia =================
         Question(
             questionText = "¿En qué año comenzó la Segunda Guerra Mundial?",
@@ -112,6 +149,36 @@ class pantallapreguntas : ComponentActivity() {
             categoria = "Historia",
             options = listOf("Miguel Ángel", "Leonardo da Vinci", "Rafael", "Van Gogh"),
             correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿En qué año llegó Cristóbal Colón a América?",
+            categoria = "Historia",
+            options = listOf("1492", "1500", "1485", "1512"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿Qué guerra terminó con el Tratado de Versalles?",
+            categoria = "Historia",
+            options = listOf("Primera Guerra Mundial", "Segunda Guerra Mundial", "Guerra Fría", "Guerra Civil Española"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿Quién fue el principal autor de la teoría heliocéntrica?",
+            categoria = "Historia",
+            options = listOf("Galileo Galilei", "Isaac Newton", "Nicolás Copérnico", "Johannes Kepler"),
+            correctAnswerIndex = 2
+        ),
+        Question(
+            questionText = "¿En qué año se fundó oficialmente la Unión Europea?",
+            categoria = "Historia",
+            options = listOf("1991", "1993", "1995", "2000"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Qué imperio construyó la ciudad de Tenochtitlán?",
+            categoria = "Historia",
+            options = listOf("Azteca", "Inca", "Maya", "Tolteca"),
+            correctAnswerIndex = 0
         ),
 
         // ================= Deportes =================
@@ -144,6 +211,36 @@ class pantallapreguntas : ComponentActivity() {
             categoria = "Deportes",
             options = listOf("3", "5", "7", "4"),
             correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Qué país ganó la Copa Mundial de Fútbol en 2022?",
+            categoria = "Deportes",
+            options = listOf("Francia", "Argentina", "Brasil", "Alemania"),
+            correctAnswerIndex = 1
+        ),
+        Question(
+            questionText = "¿Qué tenista español ha ganado múltiples títulos de Roland Garros?",
+            categoria = "Deportes",
+            options = listOf("Rafael Nadal", "David Ferrer", "Carlos Moyá", "Pablo Carreño"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿Qué nadador tiene más medallas olímpicas en la historia?",
+            categoria = "Deportes",
+            options = listOf("Michael Phelps", "Ryan Lochte", "Mark Spitz", "Ian Thorpe"),
+            correctAnswerIndex = 0
+        ),
+        Question(
+            questionText = "¿Cuál es la distancia oficial de un maratón?",
+            categoria = "Deportes",
+            options = listOf("42,125 km", "42,185 km", "42,195 km", "42,165 km"),
+            correctAnswerIndex = 2
+        ),
+        Question(
+            questionText = "¿En qué país se originó el fútbol moderno?",
+            categoria = "Deportes",
+            options = listOf("España", "Alemania", "Italia", "Inglaterra"),
+            correctAnswerIndex = 3
         )
     )
 
@@ -155,19 +252,46 @@ class pantallapreguntas : ComponentActivity() {
     private var handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
 
+    private var sonidoClick = 0
+    private var sonidoAcierto = 0
+    private var sonidoError = 0
+    private var volumenGeneral = 1.0f
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_test_aitor2)
 
+
+        musicaFondo = MediaPlayer.create(this, R.raw.musica_fondo)
+        musicaFondo.isLooping = true
+        musicaFondo.setVolume(0.5f, 0.5f)
+        musicaFondo.start()
+
+//  Efectos de sonido
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(5)
+            .setAudioAttributes(audioAttributes)
+            .build()
+
+// Cargar sonidos
+        sonidoClick = soundPool.load(this, R.raw.click, 1)
+        sonidoAcierto = soundPool.load(this, R.raw.correct, 1)
+        sonidoError = soundPool.load(this, R.raw.wrong, 1)
+
         initListeners()
 
         preguntasFiltradas = questions.filter { it.categoria == categoriaSeleccionada }
 
         val numPreguntas: Int = when(dificultadSeleccionada) {
-            "Facil" -> 2
-            "Media" -> 4
+            "Facil" -> 5
+            "Media" -> 8
             "Dificil" -> preguntasFiltradas.size
             else -> 3
         }
@@ -186,19 +310,20 @@ class pantallapreguntas : ComponentActivity() {
 
         // Guardar ajustes
         btnGuardarAjustes.setOnClickListener {
+            soundPool.play(sonidoClick, volumenGeneral, volumenGeneral, 1, 0, 1f)
             savePreferences()
             drawerLayout.closeDrawers()
             Toast.makeText(this, "Ajustes guardados", Toast.LENGTH_SHORT).show()
         }
 
-        // Cambiar tema oscuro/claro
-        switchTema.setOnCheckedChangeListener { _, isChecked ->
-            val modo = if (isChecked)
-                AppCompatDelegate.MODE_NIGHT_YES
-            else
-                AppCompatDelegate.MODE_NIGHT_NO
-            AppCompatDelegate.setDefaultNightMode(modo)
-        }
+        seekVolume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                volumenGeneral = progress / 100f
+                musicaFondo.setVolume(volumenGeneral, volumenGeneral)
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
 
 
         // Obtener nombre del usuario desde el intent
@@ -227,6 +352,7 @@ class pantallapreguntas : ComponentActivity() {
                 stopTimer()
                 showResults()
             }
+            soundPool.play(sonidoClick, volumenGeneral, volumenGeneral, 1, 0, 1f)
         }
 
         // Boton anterior
@@ -235,8 +361,16 @@ class pantallapreguntas : ComponentActivity() {
                 currentQuestionIndex--
                 showQuestion()
             }
+            soundPool.play(sonidoClick, volumenGeneral, volumenGeneral, 1, 0, 1f)
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (musicaFondo.isPlaying) musicaFondo.stop()
+        musicaFondo.release()
+        soundPool.release()
     }
 
     @SuppressLint("ResourceAsColor")
@@ -272,8 +406,15 @@ class pantallapreguntas : ComponentActivity() {
         val question = preguntasFiltradas[currentQuestionIndex]
         userAnswers[currentQuestionIndex] = selectedIndex
 
+        soundPool.play(sonidoClick, volumenGeneral, volumenGeneral, 1, 0, 1f)
+
         showAnswerColors(selectedIndex)
-        if(selectedIndex == question.correctAnswerIndex) correctAnswers++
+        if (selectedIndex == question.correctAnswerIndex) {
+            correctAnswers++
+            soundPool.play(sonidoAcierto, volumenGeneral, volumenGeneral, 1, 0, 1f)
+        } else {
+            soundPool.play(sonidoError, volumenGeneral, volumenGeneral, 1, 0, 1f)
+        }
 
         btnNext.isEnabled = true
         btnNext.alpha = 1f
@@ -337,14 +478,12 @@ class pantallapreguntas : ComponentActivity() {
     private fun savePreferences(){
         prefs.edit().apply {
             putInt("volumen", seekVolume.progress)
-            putBoolean("modoOscuro", switchTema.isChecked)
             apply()
         }
     }
 
     private fun loadPreferences(){
         seekVolume.progress = prefs.getInt("volumen", 50)
-        switchTema.isChecked = prefs.getBoolean("modoOscuro", false)
     }
 
     // Funciones auxiliares
@@ -364,7 +503,6 @@ class pantallapreguntas : ComponentActivity() {
         drawerLayout = findViewById(R.id.drawerLayout)
         btnSettings = findViewById(R.id.btnSettings)
         seekVolume = findViewById(R.id.seekVolume)
-        switchTema = findViewById(R.id.switchTema)
         btnGuardarAjustes = findViewById(R.id.btnGuardarAjustes)
 
         categoriaSeleccionada = intent.getStringExtra("categoria") ?: "General"
